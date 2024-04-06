@@ -5,6 +5,10 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 const characterRouter = require("./api/characters/character.router");
 const { connectMongo } = require("./utils/db");
+const {
+  notFoundHandler,
+  errorHandler,
+} = require("./api/middlewares/error.middleware");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -22,6 +26,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/characters", characterRouter);
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`El servidor se ha iniciado en el puerto: ${PORT}`);
